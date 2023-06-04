@@ -4,8 +4,8 @@ const router = express.Router();
 const Order = require("../../models/orders/orders");
 
 router.get("/", async (req, res, next) => {
-  const order = await Order.find();
-  res.json({ order });
+  const orders = await Order.find();
+  res.json(orders);
 });
 
 router.post("/", async (req, res, next) => {

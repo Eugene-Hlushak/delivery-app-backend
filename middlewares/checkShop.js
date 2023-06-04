@@ -1,10 +1,15 @@
-const Shop = require("../../models/shops/shops");
+const Shop = require("../models/shops/shops");
+const { HttpError } = require("../helpers/HttpError");
 
-const checkShop = async (req, res) => {
-  const shopInfo = await Shop.findById(req.body);
+const checkShop = async (req, res, next) => {
+  console.log(req.params.shopId);
+  const shopInfo = await Shop.findById(req.params.shopId);
   if (!shopInfo) {
-    console.log("No shop");
+    throw HttpError(404);
   }
   req.shop = shopInfo;
-  console.log("req.shop", req.shop);
+
+  next();
 };
+
+module.exports = checkShop;

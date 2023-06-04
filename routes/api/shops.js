@@ -1,41 +1,32 @@
 const express = require("express");
+// const { createShop, checkShop } = require("../../services/shops/shops");
+
 const {
-  getShops,
-  createShop,
-  checkShop,
-} = require("../../services/shops/shops");
+  getAllShops,
+  getShopProducts,
+} = require("../../controllers/shopsController");
+const isValidId = require("../../middlewares/isValidId");
+const checkShop = require("../../middlewares/checkShop");
 
 const router = express.Router();
 const Product = require("../../models/products/products");
 
-router.get("/", async (req, res, next) => {
-  const data = await getShops();
-  res.json(data);
-});
+router.get("/", getAllShops);
 
-router.post("/", async (req, res, next) => {
-  const data = await createShop(req.body);
-  res.json({ data });
-});
-
-router.get("/:shopId/products", checkShop, async (req, res, next) => {
-  const { _id: shop } = req.shop;
-  const data = await Product.find({ shop });
-  res.json(data);
-});
+router.get("/:shopId/products", checkShop, getShopProducts);
 
 // -------------------------------------------------------------------//
 
-router.post("/:shopId/products", checkShop, async (req, res, next) => {
-  const { _id: shop } = req.shop;
-  const result = await Product.create({ ...req.body, shop });
+router.post(
+  "/:shopId/products",
+  isValidId,
+  checkShop,
+  async (req, res, next) => {
+    const { _id: shop } = req.shop;
+    const result = await Product.create({ ...req.body, shop });
 
-  res.json({ result });
-});
-
-router.post("/", async (req, res, next) => {
-  const data = await createShop(req.body);
-  res.json({ data });
-});
+    res.json({ result });
+  }
+);
 
 module.exports = router;
