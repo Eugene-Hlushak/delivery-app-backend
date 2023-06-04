@@ -3,7 +3,7 @@ const {
   getShops,
   //   getShopInfo,
   getProductsByShop,
-} = require("../services/shops/shops");
+} = require("../services/shops/shopsServices");
 
 const getAllShops = async (req, res) => {
   const shops = await getShops();

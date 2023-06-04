@@ -3,9 +3,16 @@ const productSchema = new Schema({
   name: "String",
   price: "Number",
   quantity: "Number",
-  shop: "String",
-  _id: "String",
+  shop: {
+    type: Schema.Types.ObjectId,
+    ref: "shop",
+  },
+  _id: {
+    type: Schema.Types.ObjectId,
+    ref: "product",
+  },
 });
+
 const orderSchema = new Schema(
   {
     customer: {
@@ -21,8 +28,7 @@ const orderSchema = new Schema(
       required: true,
     },
     user: {
-      type: Schema.Types.ObjectId,
-      ref: "user",
+      type: "String",
     },
   },
   {

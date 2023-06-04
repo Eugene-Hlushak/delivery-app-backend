@@ -1,26 +1,24 @@
 const express = require("express");
-// const { createShop, checkShop } = require("../../services/shops/shops");
-
-const {
-  getAllShops,
-  getShopProducts,
-} = require("../../controllers/shopsController");
-const isValidId = require("../../middlewares/isValidId");
-const checkShop = require("../../middlewares/checkShop");
-
+const ctrl = require("../../controllers/shopsController");
+const mw = require("../../middlewares");
 const router = express.Router();
 const Product = require("../../models/products/products");
 
-router.get("/", getAllShops);
+router.get("/", ctrl.getAllShops);
 
-router.get("/:shopId/products", checkShop, getShopProducts);
+router.get(
+  "/:shopId/products",
+  mw.isValidId,
+  mw.checkShop,
+  ctrl.getShopProducts
+);
 
 // -------------------------------------------------------------------//
 
 router.post(
   "/:shopId/products",
-  isValidId,
-  checkShop,
+  mw.isValidId,
+  mw.checkShop,
   async (req, res, next) => {
     const { _id: shop } = req.shop;
     const result = await Product.create({ ...req.body, shop });
