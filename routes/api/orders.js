@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getCustomerOrders, createOrder } = require("services/orders");
+const { getCustomerOrders, createOrder } = require("../../services/orders");
 
 router.get("/", async (req, res, next) => {
   const email = req.body.email;
